@@ -1,0 +1,38 @@
+services:
+  frontend:
+    container_name: frontend
+    build: ./Frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./Frontend:/app
+      - /app/node_modules
+
+  backend:
+    container_name: backend
+    build: ./backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    environment:
+      MONGO_URI: "mongodb://mongodb:27017/traveltracker"
+      JWT_SECRET_KEY: "super-secret-key"
+      EXCHANGE_RATE_API_KEY: "your-api-key"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
