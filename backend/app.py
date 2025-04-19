@@ -16,7 +16,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}}) #will be mapped to port
 
 # mongo and jwt database
-app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://localhost:27017/traveltracker")
+app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY", "super-secret-key")
 
 # init extension
