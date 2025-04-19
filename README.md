@@ -1,5 +1,10 @@
 # Travel Tracker
 
+## Current Repo Instructions:
+* Had to make a new venv (but functions the same as the old one from the requirements file)
+* Had to delete node_modules from the folder as it messes with docker set up. If you're testing locally, you'll have to reinstall them from the package.json file, BUT do not push them into the repo.
+
+
 ## Deliverable 2
 * [Deliverable 2 Document combined with Resumes](Resume/deliverable2/CSC468_Deliverable2_Group5.pdf)
 * [Presentation SINGLE Document](Resume/deliverable2/TravelTracker_Poster.pdf)
