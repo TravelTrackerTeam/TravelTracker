@@ -5,7 +5,9 @@ import { Input } from "./components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/ui/tabs";
 import { FaPlane, FaHotel, FaListAlt, FaDollarSign, FaClipboardList } from "react-icons/fa";
 
+  
 export default function TravelTracker() {
+  
   const [tripName, setTripName] = useState("");
   const [budget, setBudget] = useState("");
   const [email, setEmail] = useState("");
@@ -21,7 +23,6 @@ export default function TravelTracker() {
     console.log("From Backend:", data.msg);
     alert(`Backend: ${data.msg}`);
   };
-  
 
   const handleSignUp = async () => {
     console.log("Signup button clicked");
