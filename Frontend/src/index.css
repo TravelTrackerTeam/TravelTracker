@@ -1,51 +1,42 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  font-weight: 40;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  align-items: center;
+}
 
+.container {
+  max-width: 2000px; 
+  height: 10vh;
+  padding: 50px;
 }
-body{
-  background: rgb(247, 217, 222);
+
+.title {
+  margin: auto;
+  text-align: center;
+  color: rgb(0, 0, 0);
 }
-a {
+
+.title h1{
+  font-size: 50px;
   font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  z-index: 1;
 }
-a:hover {
-  color: #535bf2;
-}
+
+
+
+
 
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  text-align: center;
+  background: rgb(247, 217, 222);
 }
 
-h1 {
-  font-size: 4.2em;
-  line-height: 1.1;
-  color:#591d50;
-}
-h2{
-  color:#591d50;
-  padding: 14px;
-}
+
+
 
 button {
   border-radius: 8px;
@@ -54,12 +45,14 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: rgb(222, 126, 142);
+  background-color: rgb(246, 124, 144);
   cursor: pointer;
   transition: border-color 0.25s;
+  margin: 0.1rem;
 }
 button:hover {
-  border-color: rgb(130, 18, 130);
+  border-color: rgb(55, 188, 255);
+  color: white;
 }
 button:focus,
 button:focus-visible {
@@ -68,37 +61,142 @@ button:focus-visible {
 button:active{
   background-color: #640357;
 }
-.p-4{
-  color: black;
-}
-.mb-6{
-  text-align: left;
-  
-}
-.mb-2{
-  background-color: whitesmoke;
-}
-.login-and-signup-btn{
-  margin-top: 20px ;
-  margin-bottom: 20px;
-  margin-left: 60px;
+
+nav {
+  width: 100%;
+  background-color: #ffbdcd;
+  padding: 1rem 2rem;
+  box-sizing: border-box;
 }
 
-input::placeholder{
-  color: rgb(84, 12, 44);
-  background: ivory;
-  border-style:line;
-  
+#nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px; 
+  margin: 0 auto; 
 }
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+
+#nav-bar {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-item a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.nav-item a:hover {
+  color: aliceblue;
+}
+
+#auth-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#auth-section button {
+  padding: 0.5rem 1rem;
+  background-color: hsl(313, 38%, 60%);
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#auth-section button:hover {
+  background-color: #500a61;
+}
+
+.home{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.trip-planner-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.page-header {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #333;
+  text-align: center;
+}
+
+.trip-header {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.planner-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+/* Make the card look like a sheet of paper */
+.card-sheet {
+  background: white;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-sheet .p-4 {
+  padding: 1.5rem;
+}
+
+/* Style inside the card */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.gap-2 {
+  gap: 1rem;
+}
+
+/* Make the input fields bigger and multiline-ready */
+input {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+input::placeholder {
+  color: #999;
+}
+
+.save-trip-button{
+  padding: 5rem;
+
 }
