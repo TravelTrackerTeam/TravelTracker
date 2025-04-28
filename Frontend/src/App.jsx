@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "./components/Navbar";
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 export default function TravelTracker() {
   const [tripName, setTripName] = useState("");
   const [budget, setBudget] = useState("");
@@ -95,6 +96,8 @@ export default function TravelTracker() {
     }
   };
 =======
+=======
+>>>>>>> Stashed changes
 import {
   BrowserRouter as Router,
   Routes,
@@ -110,6 +113,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
   return (
