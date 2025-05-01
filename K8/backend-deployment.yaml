@@ -1,0 +1,27 @@
+# backend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: yourdockerhub/backend:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGO_URI
+              value: "mongodb://mongodb:27017/traveltracker"
+            - name: JWT_SECRET_KEY
+              value: "super-secret-key"
+            - name: EXCHANGE_RATE_API_KEY
+              value: "your-api-key"
