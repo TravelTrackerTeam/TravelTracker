@@ -27,6 +27,19 @@
   z-index: 1;
 }
 
+.image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+}
+
+.image img {
+  width: 220px;
+  height: auto;
+}
+
+
 
 
 

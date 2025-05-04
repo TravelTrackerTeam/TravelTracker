@@ -14,7 +14,10 @@ const Home = () => {
         <div className="home">
             <h2 className="page-header">Welcome to Travel Tracker</h2>
 
-            <Button onClick={testConnection}>Click to test servers</Button>
+            <Button className="mt-4" onClick={() => window.location.href = "/login"}>
+                Login or Sign up to Start Planning your Next Trip!
+            </Button>
+
         </div>
     );
 };

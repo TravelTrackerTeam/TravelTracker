@@ -9,7 +9,7 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-   {/*const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
   
    // ---- test login ----
@@ -19,9 +19,9 @@ export default function Login() {
     } else {
       alert("Invalid test credentials!");
     }
-  };*/}
+  }
 
-  const handleSubmit = async (e) => {
+  /* const handleSubmit = async (e) => {
     e.preventDefault();
 
     const endpoint = mode === "login" ? "/api/login" : "/api/signup";
@@ -51,11 +51,11 @@ export default function Login() {
       alert("An error occurred. Try again.");
     }
   };
-
+ */
   return (
-    <div>
+    <div className="auth-form">
       
-      <h2 className="page-header">{mode === "login" ? "Login" : "Sign Up"}</h2>
+      <h1>{mode === "login" ? "Login" : "Sign Up"}</h1>
       <h4><center>Please login or signup to create and view your trips.</center></h4>
 
       <form onSubmit={handleSubmit}>
@@ -81,7 +81,7 @@ export default function Login() {
       <p>
         {mode === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
         <button onClick={() => setMode(mode === "login" ? "signup" : "login")}>
-          {mode === "login" ? "Sign Up" : "Login"}
+          {mode === "login" ? "Sign-Up" : "Login"}
         </button>
       </p>
     </div>

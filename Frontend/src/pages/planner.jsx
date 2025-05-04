@@ -1,21 +1,58 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
-import { FaPlane, FaHotel, FaListAlt, FaDollarSign, FaClipboardList } from "react-icons/fa";
+import { FaPlane, FaPlaneDeparture, FaHotel, FaListAlt, FaDollarSign, FaClipboardList } from "react-icons/fa";
+import { motion } from "framer-motion"; 
+import "../styles/theme.css";
 
 export default function TravelTracker() {
   const [tripName, setTripName] = useState("");
   const [budget, setBudget] = useState("");
-  const [flight, setFlight] = useState("");
-  const [expenses, setExpenses] = useState([""]);
+  const [currency, setCurrency] = useState("USD");
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
+
+  const [flights, setFlights] = useState([{ detail: "", price: "" }]);
+  const [stay, setStay] = useState([{ detail: "", price: "" }]);
+  const [expenses, setExpenses] = useState([{ item: "", amount: "" }]);
   const [itinerary, setItinerary] = useState([""]);
   const [notes, setNotes] = useState("");
-
+  const [exchangeRates, setExchangeRates] = useState({});
   const [activeSection, setActiveSection] = useState(null);
 
   const token = localStorage.getItem("token");
   const API = "http://localhost:5000/api";
+
+  const currencies = ["USD", "EUR", "GBP", "JPY", "CAD"];
+
+  useEffect(() => {
+    if (currency && selectedCurrency && currency !== selectedCurrency) {
+      fetchRates();
+    }
+  }, [currency, selectedCurrency]);
+
+  const fetchRates = async () => {
+    try {
+      const res = await fetch(`https://api.exchangerate-api.com/v4/latest/${currency}`);
+      const data = await res.json();
+      setExchangeRates(data.rates);
+    } catch (error) {
+      console.error("Failed to fetch rates:", error);
+    }
+  };
+
+  const convertAmount = (amount) => {
+    const num = parseFloat(amount);
+    const rate = exchangeRates[selectedCurrency];
+  
+    if (isNaN(num) || !rate) return "0.00";
+  
+    return (num * rate).toFixed(2);
+  };
+
+  const handleCurrencyChange = (e) => {
+    setSelectedCurrency(e.target.value);
+  };
 
   const handleCreateTrip = async () => {
     if (!tripName.trim()) {
@@ -30,7 +67,16 @@ export default function TravelTracker() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ tripName, budget, flight, expenses, itinerary, notes }),
+        body: JSON.stringify({
+          tripName,
+          budget,
+          currency,
+          flights,
+          stay,
+          expenses,
+          itinerary,
+          notes,
+        }),
       });
 
       const data = await res.json();
@@ -38,8 +84,11 @@ export default function TravelTracker() {
         alert("Trip created!");
         setTripName("");
         setBudget("");
-        setFlight("");
-        setExpenses([""]);
+        setCurrency("USD");
+        setSelectedCurrency("USD");
+        setFlights([{ detail: "", price: "" }]);
+        setStay([{ detail: "", price: "" }]);
+        setExpenses([{ item: "", amount: "" }]);
         setItinerary([""]);
         setNotes("");
       } else {
@@ -51,23 +100,47 @@ export default function TravelTracker() {
     }
   };
 
-  const handleExpenseChange = (index, value) => {
-    const updatedExpenses = [...expenses];
-    updatedExpenses[index] = value;
-    setExpenses(updatedExpenses);
+  const handleArrayChange = (index, field, value, setter, array) => {
+    const updated = [...array];
+    updated[index][field] = value;
+    setter(updated);
   };
 
-  const handleItineraryChange = (index, value) => {
-    const updatedItinerary = [...itinerary];
-    updatedItinerary[index] = value;
-    setItinerary(updatedItinerary);
+  const getTotalExpenses = () => {
+    const totalFlights = flights.reduce((total, flight) => {
+      const price = parseFloat(flight.price);
+      return isNaN(price) ? total : total + price;
+    }, 0);
+
+    const totalStay = stay.reduce((total, accommodation) => {
+      const price = parseFloat(accommodation.price);
+      return isNaN(price) ? total : total + price;
+    }, 0);
+
+    const totalOtherExpenses = expenses.reduce((total, exp) => {
+      const amount = parseFloat(exp.amount);
+      return isNaN(amount) ? total : total + amount;
+    }, 0);
+
+    return totalFlights + totalStay + totalOtherExpenses;
   };
+
+  const remainingBudget = parseFloat(budget) - getTotalExpenses();
 
   return (
+    
     <div className="trip-planner-page">
-      <h2 className="page-header">Trip Planner</h2>
+      <motion.div 
+      className="dashboard-title"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      >
+        <h1>
+          Trip Planner<FaPlaneDeparture style={{ color: "#ff6fa2", marginLeft: "8px", verticalAlign: "middle" }} />
+        </h1>
+      </motion.div>
 
-      {/* Trip Name and Budget */}
       <div className="trip-header">
         <Input
           placeholder="Enter Trip Name"
@@ -82,31 +155,70 @@ export default function TravelTracker() {
           onChange={(e) => setBudget(e.target.value)}
           className="mb-2"
         />
+
+        <label>
+          Base Currency:
+          <select value={currency} onChange={(e) => setCurrency(e.target.value)} className="mb-2 ml-2">
+            {currencies.map((cur) => (
+              <option key={cur} value={cur}>{cur}</option>
+            ))}
+          </select>
+        </label>
+
+        <label>
+          View Converted In:
+          <select value={selectedCurrency} onChange={handleCurrencyChange} className="mb-4 ml-2">
+            {currencies.map((cur) => (
+              <option key={cur} value={cur}>{cur}</option>
+            ))}
+          </select>
+        </label>
+
+        {currency !== selectedCurrency && (
+          <p className="text-sm text-gray-500">
+            Converted Budget: {selectedCurrency} {convertAmount(budget)}
+          </p>
+        )}
+
+        <p className="text-sm text-gray-500 mt-2">
+          Remaining Budget: {selectedCurrency} {convertAmount(remainingBudget)}
+        </p>
       </div>
 
-      {/* Section buttons */}
       <div className="planner-tabs">
-        <Button  onClick={() => setActiveSection("flights")}><FaPlane className="flight" />Flights</Button>
-        <Button  onClick={() => setActiveSection("stay")}><FaHotel className="stay" />Stay</Button>
-        <Button  onClick={() => setActiveSection("itinerary")}><FaListAlt className="itinerary" />Itinerary</Button>
-        <Button  onClick={() => setActiveSection("budget")}><FaDollarSign className="budget" />Budget</Button>
-        <Button  onClick={() => setActiveSection("planning")}><FaClipboardList className="planning" />Planning</Button>
+        <Button onClick={() => setActiveSection("flights")}><FaPlane /> Flights</Button>
+        <Button onClick={() => setActiveSection("stay")}><FaHotel /> Stay</Button>
+        <Button onClick={() => setActiveSection("itinerary")}><FaListAlt /> Itinerary</Button>
+        <Button onClick={() => setActiveSection("budget")}><FaDollarSign /> Budget</Button>
+        <Button onClick={() => setActiveSection("planning")}><FaClipboardList /> Planning</Button>
       </div>
 
-      {/* Input information Section */}
       <div>
         {activeSection === "flights" && (
           <Card className="mb-4">
             <CardContent className="p-4 flex flex-col gap-2">
-            <h4><center>What flight(s) will you be taking? Enter the airline, flight number, departure and arrival times, etc.</center></h4>
-              {expenses.map((expense, index) => (
-                <Input
-                  key={index}
-                  placeholder="Enter flight/expense detail"
-                  value={expense}
-                  onChange={(e) => handleExpenseChange(index, e.target.value)}
-                />
+              <h4><center>Enter your flight details.</center></h4>
+              {flights.map((f, index) => (
+                <div key={index} className="flex gap-2">
+                  <Input
+                    placeholder="Flight detail"
+                    value={f.detail}
+                    onChange={(e) => handleArrayChange(index, "detail", e.target.value, setFlights, flights)}
+                  />
+                  <Input
+                    placeholder="Price"
+                    type="number"
+                    value={f.price}
+                    onChange={(e) => handleArrayChange(index, "price", e.target.value, setFlights, flights)}
+                  />
+                </div>
               ))}
+              <Button
+                variant="outline"
+                onClick={() => setFlights([...flights, { detail: "", price: "" }])}
+              >
+                + Add Flight
+              </Button>
             </CardContent>
           </Card>
         )}
@@ -114,15 +226,28 @@ export default function TravelTracker() {
         {activeSection === "stay" && (
           <Card className="mb-4">
             <CardContent className="p-4 flex flex-col gap-2">
-              <h4><center>Where will you be staying? Enter the address, name, city, etc.</center></h4>
-              {expenses.map((expense, index) => (
-                <Input
-                  key={index}
-                  placeholder="Enter stay/hotel detail"
-                  value={expense}
-                  onChange={(e) => handleExpenseChange(index, e.target.value)}
-                />
+              <h4><center>Where will you be staying?</center></h4>
+              {stay.map((s, index) => (
+                <div key={index} className="flex gap-2">
+                  <Input
+                    placeholder="Stay detail"
+                    value={s.detail}
+                    onChange={(e) => handleArrayChange(index, "detail", e.target.value, setStay, stay)}
+                  />
+                  <Input
+                    placeholder="Price"
+                    type="number"
+                    value={s.price}
+                    onChange={(e) => handleArrayChange(index, "price", e.target.value, setStay, stay)}
+                  />
+                </div>
               ))}
+              <Button
+                variant="outline"
+                onClick={() => setStay([...stay, { detail: "", price: "" }])}
+              >
+                + Add Stay
+              </Button>
             </CardContent>
           </Card>
         )}
@@ -130,14 +255,9 @@ export default function TravelTracker() {
         {activeSection === "itinerary" && (
           <Card className="mb-4">
             <CardContent className="p-4 flex flex-col gap-2">
-            <h4><center>What will you be doing? Enter any desired destinations, museums, restaurants to visit.</center></h4>
+              <h4><center>What will you be doing?</center></h4>
               {itinerary.map((item, index) => (
-                <Input
-                  key={index}
-                  placeholder="Enter itinerary item"
-                  value={item}
-                  onChange={(e) => handleItineraryChange(index, e.target.value)}
-                />
+                <Input key={index} placeholder="Itinerary item" value={item} onChange={(e) => handleArrayChange(index, e.target.value, setItinerary, itinerary)} />
               ))}
             </CardContent>
           </Card>
@@ -146,13 +266,28 @@ export default function TravelTracker() {
         {activeSection === "budget" && (
           <Card className="mb-4">
             <CardContent className="p-4">
-            <h4><center>How much do you plan to spend?</center></h4>
-              <Input
-                type="number"
-                placeholder="Enter your updated budget"
-                value={budget}
-                onChange={(e) => setBudget(e.target.value)}
-              />
+              <h4><center>Expenses</center></h4>
+              {expenses.map((exp, index) => (
+                <div key={index} className="flex gap-2">
+                  <Input
+                    placeholder="Expense item"
+                    value={exp.item}
+                    onChange={(e) => handleArrayChange(index, "item", e.target.value, setExpenses, expenses)}
+                  />
+                  <Input
+                    placeholder="Amount"
+                    type="number"
+                    value={exp.amount}
+                    onChange={(e) => handleArrayChange(index, "amount", e.target.value, setExpenses, expenses)}
+                  />
+                </div>
+              ))}
+              <Button
+                variant="outline"
+                onClick={() => setExpenses([...expenses, { item: "", amount: "" }])}
+              >
+                + Add Expense
+              </Button>
             </CardContent>
           </Card>
         )}
@@ -160,16 +295,13 @@ export default function TravelTracker() {
         {activeSection === "planning" && (
           <Card className="mb-4">
             <CardContent className="p-4">
-            <h4><center>Record any additional thoughts, important items to remember, events to attend, etc.</center></h4>
-              <Input
-                placeholder="Enter additional notes..."
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-              />
+              <h4><center>Additional Notes</center></h4>
+              <Input placeholder="Enter notes" value={notes} onChange={(e) => setNotes(e.target.value)} />
             </CardContent>
           </Card>
         )}
       </div>
+
       <Button onClick={handleCreateTrip} className="save-trip-button">Save Trip</Button>
     </div>
   );
