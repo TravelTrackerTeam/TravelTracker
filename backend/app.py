@@ -14,7 +14,6 @@ from flask_cors import CORS
 load_dotenv()
 
 app = Flask(__name__)
-# enable CORS for your Vite origin, allow Authorization header & preflight
 CORS(
     app,
     resources={r"/api/*": {"origins": "http://localhost:5173"}},
@@ -133,7 +132,7 @@ def get_trips():
     for trip in trips:
        # stringify the trip's own ID
        trip["_id"] = str(trip["_id"])
-       # now stringify each nested expense ID
+       # stringify each nested expense ID so it could be listed
        for exp in trip.get("expenses", []):
            exp["_id"] = str(exp["_id"])
     return jsonify(trips), 200
