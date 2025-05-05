@@ -38,38 +38,61 @@
 
 * [Project Notes](https://docs.google.com/document/d/1tlLTfswJN_oT1oBvBYVSixCLlUY5gRvoMqDTR7MBcOM/edit?usp=sharing)
   
-
+* If using Docker
+  docker compose down
+  docker compose build frontend backend
+  docker compose up
+  
 # Travel Tracker
 
-VERY ROUGH SKETCH // Currently using flask to make UI // Used ExchangeRate-API for conversion // 
+Currently using flask to make UI // Used ExchangeRate-API for conversion // 
 
-This is a application framework that the user can sign in and track their banking statements ( monthly income, bills, current savings ext.) and be able to convert all into a currency of their choosing. 
-
+TravelTracker is a vacation planning web application. Users can manage the logistics of their trip(s) like budget, flight information, stay information, itinerary, and notes. For international travel, users can manage their budget with TravelTracker's currency converter. 
 
 backend/
+│── node_modules/
+│── .env
 │── app.py
-│── config.py
-│── models.py
-│── routes.py
-│── database.py
-│── requirements.txt
 │── Dockerfile
-│── venv/ 
+│── requirements.txt
+
 
 frontend/
+│── node_modules/
 │── src/
 │   │── components/
-│   │   ├── Login.js
-│   │   ├── Signup.js
-│   │   ├── Dashboard.js
-│   │   ├── TransactionForm.js
-│   │   ├── TransactionTable.js
+│   │   ├── AddExpenseForm.jsx
+│   │   ├── AddTripModal.jsx
+│   │   ├── authFetch.js
+│   │   ├── CurrencyConverter.jsx
+│   │   ├── CurrencySwitcher.jsx
+│   │   ├── Navbar.jsx
+│   │   ├── TripCard.jsx
+│   │── pages/
+│   │   ├── Dashboard.jsx
+│   │   ├── LoginPage.jsx
+│   │   ├── ProfilePage.jsx
+│   │   ├── SignupPage.jsx
 │   │── services/
 │   │   ├── api.js
-│   │── App.js
-│   │── index.js
+│   │── styles/
+│   │   ├── theme.css
+│   │── App.jsx
+│   │── main.jsx
 │── public/
+│── .env
+│── .gitignore
+│── eslint.config.js
+│── index.html
+│── package-lock.json
 │── package.json
+│── README.md
+│── vite.config.js
 │── Dockerfile
 
+.dockerignore
+demo.pdf
+docker-compose.yml
+init.js
+README.md
 
