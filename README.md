@@ -1,9 +1,10 @@
 # Travel Tracker
 
-## Current Repo Instructions:
-* Had to make a new venv (but functions the same as the old one from the requirements file)
-* Had to delete node_modules from the folder as it messes with docker set up. If you're testing locally, you'll have to reinstall them from the package.json file, BUT do not push them into the repo.
-
+## Deliverable 3
+* [Deliverable 3 Document](Resume/deliverable3/CSC468_Deliverable3_Group5.pdf)
+* [Deliverable 3 Document combined with Resumes](Resume/deliverable3/CSC468_Deliverable3_Group5_withResumes.pdf)
+* [Project Poster PDF](Resume/deliverable3/TravelTrackerPoster.pdf)
+* [Project Poster PNG](Resume/deliverable3/TravelTrackerPoster_img.png)
 
 ## Deliverable 2
 * [Deliverable 2 Document combined with Resumes](Resume/deliverable2/CSC468_Deliverable2_Group5.pdf)
@@ -17,13 +18,13 @@
 * [Deliverable 1 Document](https://docs.google.com/document/d/1nsGIeEfJcqjZ_Max3em2NcJI6Ekz9qwitJ5Ktx2cg3g/edit?usp=sharing)
 * [The group's resumes](Resume/Group_resumes_combined.pdf)
 
-
-
-
-
-
+--- 
 
 ## For the group
+
+## Current Repo Instructions:
+* Had to make a new venv (but functions the same as the old one from the requirements file)
+* Had to delete node_modules from the folder as it messes with docker set up. If you're testing locally, you'll have to reinstall them from the package.json file, BUT do not push them into the repo.
 
 ### Curr Commands to Run
 * First Terminal
