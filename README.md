@@ -39,6 +39,7 @@
 * [Project Notes](https://docs.google.com/document/d/1tlLTfswJN_oT1oBvBYVSixCLlUY5gRvoMqDTR7MBcOM/edit?usp=sharing)
   
 * If using Docker
+  ```
   docker compose down
   docker compose build frontend backend
   docker compose up
