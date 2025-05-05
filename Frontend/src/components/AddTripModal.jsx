@@ -3,14 +3,14 @@ import { useState } from "react";
 import "../styles/theme.css";
 
 export default function AddTripModal({ onAddTrip, onClose }) {
-  const [title, setTitle] = useState("");
+  const [tripName, setTitle] = useState("");
   const [budget, setBudget] = useState("");
   const [currency, setCurrency] = useState("USD");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title || !budget) return;
-    onAddTrip({ title, budget: parseFloat(budget), currency, expenses: [] });
+    if (!tripName || !budget) return;
+    onAddTrip({ tripName, budget: parseFloat(budget), currency, expenses: [] });
     setTitle("");
     setBudget("");
     setCurrency("USD");
@@ -23,7 +23,7 @@ export default function AddTripModal({ onAddTrip, onClose }) {
         className="input-field"
         type="text"
         placeholder="Trip Title"
-        value={title}
+        value={tripName}
         onChange={(e) => setTitle(e.target.value)}
       />
       <input

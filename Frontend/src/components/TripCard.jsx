@@ -81,7 +81,7 @@ export default function TripCard({ trip, onDelete, onAddExpense, onDeleteExpense
 
   return (
     <div className="trip-card">
-      <h2 className="trip-title">{trip.tripName}</h2>
+      <h2 className="trip-title">{trip.tripName|| trip.name}</h2>
       <p><strong>Budget:</strong> {selectedCurrency} {convertAmount(trip.budget)}</p>
       <p><strong>Spent:</strong> {selectedCurrency} {convertAmount(totalSpent)}</p>
       <p className={isOverBudget ? "over-budget" : "under-budget"}>
