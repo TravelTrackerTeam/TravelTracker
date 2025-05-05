@@ -37,10 +37,20 @@
   cd frontend
   npm run dev
 
+* If using Docker
+  ```
+  docker compose down
+  docker compose build frontend backend
+  docker compose up
+  
+# Travel Tracker
+
+Currently using flask to make UI // Used ExchangeRate-API for conversion // 
+
+TravelTracker is a vacation planning web application. Users can manage the logistics of their trip(s) like budget, flight information, stay information, itinerary, and notes. For international travel, users can manage their budget with TravelTracker's currency converter. 
+
 * [Project Notes](https://docs.google.com/document/d/1tlLTfswJN_oT1oBvBYVSixCLlUY5gRvoMqDTR7MBcOM/edit?usp=sharing)
   
-
-# Travel Tracker
 
 
 backend/
