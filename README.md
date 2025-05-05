@@ -11,6 +11,7 @@ Currently, two official plugins are available:
 
 If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 
+## Kubernetes Deployment – Web App Containerization
 This branch contains an extended setup of the Travel Tracker project using Kubernetes to containerize and orchestrate the application’s services beyond Docker Compose.
 
 What’s Included:
@@ -35,6 +36,7 @@ Configured internal service communication between frontend, backend, and databas
 
 Optionally included an Ingress controller for frontend access via browser
 
+## Setup Instructions
 How to Run (Basic):
 kubectl apply -f mongodb-deployment.yaml
 kubectl apply -f backend-deployment.yaml
