@@ -13,45 +13,53 @@ If you are developing a production application, we recommend using TypeScript an
 
 ---
 
-# Kubernetes Deployment – Web App Containerization
+## Kubernetes Deployment – Web App Containerization
 
-This branch contains an extended setup of the Travel Tracker project using **Kubernetes** to containerize and orchestrate application services beyond Docker Compose.
-
----
-
-## What’s Included
-
-- `mongodb-deployment.yaml`
-- `backend-deployment.yaml`
-- `frontend-deployment.yaml`
-- `services.yaml` – NodePort/ClusterIP services for backend, frontend, and database
-- `ingress.yaml` *(optional – HTTP routing)*
-- `k8s-config/` – directory with all YAML manifests (if applicable)
+This branch contains an extended setup of the Travel Tracker project using **Kubernetes** to containerize and orchestrate services beyond Docker Compose.
 
 ---
 
-## What Was Done
+### K8/ – File Descriptions
 
-- Translated Docker Compose into modular Kubernetes YAML files
-- Defined persistent volumes for MongoDB
-- Configured internal service communication (backend, frontend, MongoDB)
-- (Optional) Configured Ingress for frontend access
+- `backend-deployment.yaml`  
+  Deploys the backend application using a Kubernetes Deployment resource.
+
+- `backend-service.yaml`  
+  Exposes the backend via NodePort or ClusterIP to be accessed by other services (like frontend).
+
+- `frontend-deployment.yaml`  
+  Deploys the React frontend containerized in Kubernetes.
+
+- `frontend-service.yaml`  
+  Exposes the frontend application to the browser or via Ingress.
+
+- `mongodb-deployment.yaml`  
+  Launches MongoDB using a Deployment and optional volume.
+
+- `mongodb-service.yaml`  
+  Internal service for backend to connect to MongoDB securely (ClusterIP).
+
+- `ingress.yaml` *(optional)*  
+  HTTP routing configuration for clean URLs. Can route `/api` to backend and `/` to frontend.
 
 ---
 
-## Setup Instructions
+### Setup Instructions
 
-To deploy using Kubernetes locally (e.g., Minikube, Docker Desktop):
+To deploy locally with Kubernetes (e.g., via Docker Desktop):
 
 ```bash
-kubectl apply -f mongodb-deployment.yaml
-kubectl apply -f backend-deployment.yaml
-kubectl apply -f frontend-deployment.yaml
-kubectl apply -f services.yaml
+kubectl apply -f K8/mongodb-deployment.yaml
+kubectl apply -f K8/mongodb-service.yaml
+
+kubectl apply -f K8/backend-deployment.yaml
+kubectl apply -f K8/backend-service.yaml
+
+kubectl apply -f K8/frontend-deployment.yaml
+kubectl apply -f K8/frontend-service.yaml
 
 # Optional:
-
-kubectl apply -f ingress.yaml
+kubectl apply -f K8/ingress.yaml
 
 Author
 Tasmia Iqbal
