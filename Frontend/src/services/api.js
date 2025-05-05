@@ -1,16 +1,34 @@
-//const API_KEY = import.meta.env.VITE_EXCHANGE_RATE_API_KEY;
-const BASE_URL = "https://v6.exchangerate-api.com/v6/2c672764cb333f647adb32f7/latest/USD";
+// api.js
 
+/**
+ * Fetches the conversion rate from your own backend (Flask) and applies it.
+ * Requires that you have Vite proxy set up so that `/api/exchange-rate` → http://localhost:5000.
+ */
 export async function convertCurrency(amount, from, to) {
-  if (from === to) return amount;
-
-  const res = await fetch(`${BASE_URL}`);
-  const data = await res.json();
-
-  if (data.result === "success") {
-    return amount * data.conversion_rate;
-  } else {
-    throw new Error("Currency conversion failed");
+  console.log("convertCurrency called with:", { amount, from, to });
+  if (!from || !to) {
+    throw new Error("Both `from` and `to` currencies are required");
   }
+  if (from === to) {
+    return amount;
+  }
+
+  // call your Flask endpoint, which in turn hits the v6 API
+  const res = await fetch(
+    `/api/exchange-rate?base=${encodeURIComponent(from)}&target=${encodeURIComponent(to)}`
+  );
+
+  if (!res.ok) {
+    // try to grab the error message from your backend
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.msg || `Exchange-rate request failed with status ${res.status}`);
+  }
+
+  const data = await res.json();
+  const rate = data.conversion_rate;
+  if (typeof rate !== "number") {
+    throw new Error("Invalid conversion rate received from backend");
+  }
+
+  return amount * rate;
 }
-  
