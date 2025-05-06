@@ -61,7 +61,7 @@ kubectl apply -f K8/frontend-service.yaml
 # Optional:
 kubectl apply -f K8/ingress.yaml
 
-Author: Tasmia Iqbal
+
 Branch: tasmia_k8_branch
 
 
