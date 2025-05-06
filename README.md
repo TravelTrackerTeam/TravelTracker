@@ -42,6 +42,9 @@
   docker compose down
   docker compose build frontend backend
   docker compose up
+
+  Run the Project: docker-compose up --build
+  
   
 # Travel Tracker
 
